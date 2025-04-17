@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phonetic Alphabet Converter</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0f0f0f;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 2rem;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      max-width: 800px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+    }
+
+    .phonetic-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .phonetic-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .input-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    input[type="text"] {
+      padding: 0.75rem;
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #00b894;
+      color: white;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #019270;
+    }
+
+    .result {
+      margin-top: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Phonetic Alphabet Converter</h1>
+
+    <div class="phonetic-list" id="phonetic-list">
+      <!-- Populated via JS -->
+    </div>
+
+    <div class="input-section">
+      <input type="text" id="textInput" placeholder="Enter your text here..." />
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button onclick="convertText()">Convert</button>
+        <button onclick="pasteFromClipboard()">📋 Paste & Convert</button>
+      </div>
+    </div>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const phoneticMap = {
+      A: 'Alpha', B: 'Bravo', C: 'Charlie', D: 'Delta', E: 'Echo',
+      F: 'Foxtrot', G: 'Golf', H: 'Hotel', I: 'India', J: 'Juliett',
+      K: 'Kilo', L: 'Lima', M: 'Mike', N: 'November', O: 'Oscar',
+      P: 'Papa', Q: 'Quebec', R: 'Romeo', S: 'Sierra', T: 'Tango',
+      U: 'Uniform', V: 'Victor', W: 'Whiskey', X: 'X-ray', Y: 'Yankee', Z: 'Zulu', ".": 'Period'
+    };
+
+    const listContainer = document.getElementById('phonetic-list');
+    for (let [letter, code] of Object.entries(phoneticMap)) {
+      const div = document.createElement('div');
+      div.className = 'phonetic-item';
+      div.textContent = `${letter} = ${code}`;
+      listContainer.appendChild(div);
+    }
+
+    function convertText() {
+      const input = document.getElementById('textInput').value;
+      const resultDiv = document.getElementById('result');
+      const converted = input.toUpperCase().split('').map(char => {
+        if (phoneticMap[char]) return phoneticMap[char];
+        else if (char === ' ') return ' / ';
+        else return char;
+      }).join(' ');
+      resultDiv.textContent = converted;
+    }
+
+    document.getElementById('textInput').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        convertText();
+      }
+    });
+
+    async function pasteFromClipboard() {
+      try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById('textInput').value = text;
+        convertText();
+      } catch (err) {
+        alert("Failed to read clipboard. Make sure you have permission.");
+      }
+    }
+  </script>
+</body>
+</html>
