@@ -110,20 +110,18 @@
   <div class="container">
     <h1>Phonetic Alphabet Converter</h1>
 
-    <div class="options">
-      <label for="simpleToggle">
-        <input type="checkbox" id="simpleToggle" />
-        Simple Mode (Just phonetics)
-      </label>
-      <button class="toggle-theme" onclick="toggleTheme()" aria-label="Toggle theme">🌓 Toggle Theme</button>
-    </div>
-
     <div class="phonetic-list" id="phonetic-list"></div>
 
     <div class="input-section">
       <label for="textInput" style="width: 100%;">Enter your text:</label>
       <input type="text" id="textInput" placeholder="Enter your text here..." aria-label="Text input" />
       <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <div class="options">
+      <label for="simpleToggle">
+        <input type="checkbox" id="simpleToggle" />
+        Simple Mode (Just phonetics)
+      </label>
+    </div>
         <button onclick="convertText()" aria-label="Convert text">Convert</button>
         <button onclick="pasteFromClipboard()" aria-label="Paste from clipboard">📋 Paste & Convert</button>
       </div>
@@ -195,11 +193,6 @@
       }
     }
 
-    function toggleTheme() {
-      const dark = getComputedStyle(document.body).getPropertyValue('--bg-color') === '#ffffff';
-      document.documentElement.style.setProperty('--bg-color', dark ? '#0f0f0f' : '#ffffff');
-      document.documentElement.style.setProperty('--text-color', dark ? '#ffffff' : '#000000');
-    }
   </script>
 </body>
 </html>
