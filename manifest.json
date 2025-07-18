@@ -3,8 +3,8 @@
   "short_name": "Phonetics",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#0f0f0f",
-  "theme_color": "#00b894",
+  "background_color": "#0f2027",
+  "theme_color": "#009688",
   "orientation": "portrait",
   "icons": [
     {
