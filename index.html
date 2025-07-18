@@ -5,36 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Phonetic Alphabet Converter</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#00b894" />
+  <meta name="theme-color" content="#008080" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      --text-color: #e0f7fa;
+      --container-bg: rgba(255, 255, 255, 0.1);
+      --container-border: rgba(255, 255, 255, 0.15);
+      --button-bg: rgba(0, 150, 136, 0.7);
+      --button-hover-bg: rgba(0, 121, 107, 0.85);
+      --shadow-color: rgba(0, 0, 0, 0.7);
+      --input-bg: rgba(255, 255, 255, 0.15);
+      --input-placeholder: #b2dfdb;
+    }
+
+    body.light-theme {
+      --bg-gradient: linear-gradient(135deg, #d0e8f2, #a6c0cd, #8ca1b3);
+      --text-color: #1b262c;
+      --container-bg: rgba(255, 255, 255, 0.4);
+      --container-border: rgba(0, 0, 0, 0.1);
+      --button-bg: rgba(0, 150, 136, 0.5);
+      --button-hover-bg: rgba(0, 121, 107, 0.65);
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --input-bg: rgba(255, 255, 255, 0.8);
+      --input-placeholder: #555;
+    }
+
     * {
       box-sizing: border-box;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+
     body {
       margin: 0;
       padding: 1rem;
-      background: var(--bg-color, #0f0f0f);
-      color: var(--text-color, white);
-      transition: background 0.3s ease, color 0.3s ease;
+      background: var(--bg-gradient);
+      color: var(--text-color);
+      transition: background 0.5s ease, color 0.5s ease;
+      font-size: clamp(14px, 2vw, 18px);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
     }
+
     .container {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--container-bg);
       border-radius: 20px;
       padding: 2rem;
-      backdrop-filter: blur(15px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      width: 80%;
-      margin: auto;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--container-border);
+      box-shadow: 0 8px 32px var(--shadow-color);
       margin-top: 50px;
+      transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 1rem;
       font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
     }
+
     .phonetic-list {
       display: flex;
       flex-wrap: wrap;
@@ -42,97 +78,168 @@
       justify-content: center;
       margin-bottom: 2rem;
     }
+
     .phonetic-item {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255 255 255 / 0.15);
       padding: 0.5rem 1rem;
       border-radius: 10px;
       font-size: 0.9rem;
       white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0 0 0 / 0.3);
+      transition: background 0.3s ease;
     }
+
+    body.light-theme .phonetic-item {
+      background: rgba(0 0 0 / 0.05);
+      box-shadow: 0 2px 8px rgba(0 0 0 / 0.1);
+    }
+
     .input-section {
       display: flex;
       flex-direction: column;
-      align-items: center;
       gap: 1rem;
+      width: 100%;
+      margin: 0 auto;
     }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      user-select: none;
+    }
+
     input[type="text"] {
-      padding: 0.75rem;
+      padding: 0.75rem 1rem;
       width: 100%;
       border: none;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      color: inherit;
+      border-radius: 12px;
+      background: var(--input-bg);
+      color: var(--text-color);
       font-size: 1rem;
+      outline-offset: 2px;
+      outline-color: transparent;
+      transition: background 0.4s ease, color 0.4s ease;
     }
-    button {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 10px;
-      background-color: #00b894;
-      color: white;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
+
+    input[type="text"]::placeholder {
+      color: var(--input-placeholder);
+      opacity: 0.8;
     }
-    button:hover {
-      background-color: #019270;
+
+    input[type="text"]:focus {
+      outline-color: var(--button-bg);
+      background: rgba(255 255 255 / 0.25);
     }
-    .result {
-      margin-top: 1.5rem;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 1rem;
-      border-radius: 10px;
-      word-wrap: break-word;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    .result.show {
-      opacity: 1;
-    }
+
     .options {
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 10px 0;
+      max-width: 400px;
+      margin: auto;
     }
-    label {
+
+    label[for="simpleToggle"] {
+      cursor: pointer;
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.9rem;
+      user-select: none;
     }
-    .toggle-theme {
-      background-color: #636e72;
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      margin-top: 0.5rem;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .toggle-theme:hover {
-      background-color: #2d3436;
+
+    button {
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 15px;
+      background-color: var(--button-bg);
+      color: white;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+      height: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      white-space: nowrap;
+      box-shadow: 0 4px 15px rgba(0 0 0 / 0.3);
+      user-select: none;
+    }
+
+    button:hover {
+      background-color: var(--button-hover-bg);
+      box-shadow: 0 6px 20px rgba(0 0 0 / 0.45);
+    }
+
+    .result {
+      margin-top: 1.5rem;
+      background: var(--container-bg);
+      padding: 1rem;
+      border-radius: 15px;
+      word-wrap: break-word;
+      opacity: 0;
+      transition: opacity 0.5s ease, background 0.5s ease, box-shadow 0.5s ease;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 8px 32px var(--shadow-color);
+    }
+
+    .result.show {
+      opacity: 1;
+    }
+
+    @media (min-width: 600px) {
+      .container {
+        width: 60%;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" role="main">
     <h1>Phonetic Alphabet Converter</h1>
 
-    <div class="phonetic-list" id="phonetic-list"></div>
+    <div class="phonetic-list" id="phonetic-list" aria-label="Phonetic alphabet list"></div>
 
     <div class="input-section">
-      <label for="textInput" style="width: 100%;">Enter your text:</label>
-      <input type="text" id="textInput" placeholder="Enter your text here..." aria-label="Text input" />
-      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-        <div class="options">
-      <label for="simpleToggle">
-        <input type="checkbox" id="simpleToggle" />
-        Simple Mode (Just phonetics)
-      </label>
-    </div>
-        <button onclick="convertText()" aria-label="Convert text">Convert</button>
+      <label for="textInput" style="width: 100%; max-width: 400px;">Enter your text:</label>
+      <input
+        type="text"
+        id="textInput"
+        placeholder="Enter your text here..."
+        aria-label="Text input"
+        autocomplete="off"
+      />
+
+      <div class="options">
+        <label for="simpleToggle">
+          <input type="checkbox" id="simpleToggle" />
+          Simple Mode (Just phonetics)
+        </label>
+      </div>
+
+      <div class="button-grid">
+        <button onclick="convertText()" aria-label="Convert text">🔁 Convert</button>
         <button onclick="pasteFromClipboard()" aria-label="Paste from clipboard">📋 Paste & Convert</button>
+        <button onclick="clearText()" aria-label="Clear input and result">🧹 Clear Input & Result</button>
+        <button onclick="toggleTheme()" class="toggle-theme" aria-label="Toggle theme">🌓 Toggle Theme</button>
       </div>
     </div>
 
-    <div class="result" id="result" aria-live="polite"></div>
+    <div class="result" id="result" aria-live="polite" aria-atomic="true"></div>
   </div>
 
   <script>
@@ -158,7 +265,8 @@
     }
 
     function convertText() {
-      const input = document.getElementById('textInput').value.trim();
+      const inputField = document.getElementById('textInput');
+      const input = inputField.value.trim();
       const resultDiv = document.getElementById('result');
       const simpleMode = document.getElementById('simpleToggle').checked;
 
@@ -197,14 +305,25 @@
         alert("Failed to read clipboard. Make sure you have permission.");
       }
     }
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(reg => console.log('Service Worker registered:', reg.scope))
-      .catch(err => console.error('Service Worker registration failed:', err));
-  });
-}
 
+    function clearText() {
+      document.getElementById('textInput').value = '';
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = '';
+      resultDiv.classList.remove('show');
+    }
+
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light-theme');
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(reg => console.log('Service Worker registered:', reg.scope))
+          .catch(err => console.error('Service Worker registration failed:', err));
+      });
+    }
   </script>
 </body>
 </html>
