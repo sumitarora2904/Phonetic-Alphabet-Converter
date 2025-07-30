@@ -11,7 +11,7 @@
 }
 
 body.light-theme {
-  --bg-gradient: linear-gradient(135deg, #d0e8f2, #a6c0cd, #8ca1b3);
+  --bg-gradient: linear-gradient(135deg, #e0f7fa, #b2ebf2, #80deea);
   --text-color: #1b262c;
   --container-bg: rgba(255, 255, 255, 0.4);
   --container-border: rgba(0, 0, 0, 0.1);
@@ -58,6 +58,7 @@ h1 {
   font-size: 1.8rem;
   font-weight: 700;
   letter-spacing: 1px;
+  color: #5fb1af;
 }
 
 .phonetic-list {
